@@ -34,4 +34,4 @@ This project demonstrates advanced **Object-Oriented Programming (OOP)** concept
 ### Steps
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/YourUsername/Disaster-Management-System.git](https://github.com/YourUsername/Disaster-Management-System.git)
+   git clone [https://github.com/Amman17/Disaster-Response-Managment-System.git](https://github.com/Amman17/Disaster-Response-Managment-System.git)
