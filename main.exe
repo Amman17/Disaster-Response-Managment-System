@@ -1,0 +1,132 @@
+//core/ReportGenerator.h
+#pragma once
+#include <iostream>
+#include <string>
+using namespace std;
+#include "core/OperationCenter.h"
+// ============================================================
+// UI HELPERS (needed because ReportGenerator uses them)
+// ============================================================
+
+#include "utils/utils.h"
+
+// ============================================================
+// REPORT GENERATOR CLASS
+// ============================================================
+
+class ReportGenerator {
+public:
+    void generateDetailedReport(OperationCenter& center);
+};
+// ============================================================
+// IMPLEMENTATION
+// ============================================================
+
+// NOTE: We include OperationCenter AFTER declaration via forward declaration
+// so we must define function AFTER OperationCenter is fully known in main project.
+// BUT since you insisted single file, we assume OperationCenter is included elsewhere BEFORE this header.
+
+inline void ReportGenerator::generateDetailedReport(OperationCenter& center) {
+
+    cout << endl;
+    printHeader("DETAILED SYSTEM REPORT");
+
+    // EVENTS
+    cout << endl;
+    printSubHeader("DISASTER EVENTS");
+
+    if (center.eventCount == 0) {
+        cout << "  No events registered." << endl;
+    } else {
+        for (int i = 0; i < center.eventCount; i++) {
+            cout << "  [" << i + 1 << "] "
+                 << center.events[i]->getName()
+                 << " | Location : " << center.events[i]->getLocation()
+                 << " | Severity : " << center.events[i]->getSeverity() << "/5"
+                 << " | Score    : " << center.events[i]->getSeverityScore()
+                 << endl;
+        }
+    }
+
+    // RESPONDERS
+    cout << endl;
+    printSubHeader("RESPONDERS");
+
+    if (center.responderCount == 0) {
+        cout << "  No responders added." << endl;
+    } else {
+        for (int i = 0; i < center.responderCount; i++) {
+            cout << "  [" << i + 1 << "] "
+                 << center.responders[i]->getName()
+                 << " | Available: "
+                 << (center.responders[i]->getAvailability() ? "Yes" : "No")
+                 << endl;
+        }
+    }
+
+    // VICTIMS
+    cout << endl;
+    printSubHeader("VICTIMS");
+
+    if (center.victimCount == 0) {
+        cout << "  No victims registered." << endl;
+    } else {
+        int rescued = 0, notRescued = 0;
+
+        for (int i = 0; i < center.victimCount; i++) {
+            cout << "  [" << i + 1 << "] "
+                 << center.victims[i]->getName()
+                 << " | Injury  : " << center.victims[i]->getInjury()
+                 << " | Rescued : "
+                 << (center.victims[i]->getRescued() ? "Yes" : "No")
+                 << endl;
+
+            if (center.victims[i]->getRescued()) rescued++;
+            else notRescued++;
+        }
+
+        printLine('-');
+        cout << "  Total Rescued     : " << rescued << endl;
+        cout << "  Total Not Rescued : " << notRescued << endl;
+    }
+
+    // RESOURCES
+    cout << endl;
+    printSubHeader("RESOURCES");
+
+    if (center.resourceCount == 0) {
+        cout << "  No resources added." << endl;
+    } else {
+        for (int i = 0; i < center.resourceCount; i++) {
+            cout << "  [" << i + 1 << "] "
+                 << center.resources[i]->getType()
+                 << " | Quantity  : " << center.resources[i]->getQuantity()
+                 << " | Available : "
+                 << (center.resources[i]->getAvailability() ? "Yes" : "No")
+                 << endl;
+        }
+    }
+
+    // ZONES
+    cout << endl;
+    printSubHeader("ZONES");
+
+    if (center.zoneCount == 0) {
+        cout << "  No zones created." << endl;
+    } else {
+        for (int i = 0; i < center.zoneCount; i++) {
+            cout << "  [" << i + 1 << "] "
+                 << center.zones[i]->getZoneName()
+                 << " | Disaster   : " << center.zones[i]->getDisasterType()
+                 << " | Severity   : " << center.zones[i]->getSeverity() << "/5"
+                 << " | Victims    : " << center.zones[i]->getVictimCount()
+                 << " | Responders : " << center.zones[i]->getResponderCount()
+                 << endl;
+        }
+    }
+
+    cout << endl;
+    printLine('=');
+    cout << "              END OF REPORT" << endl;
+    printLine('=');
+}
